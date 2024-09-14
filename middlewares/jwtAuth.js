@@ -1,12 +1,12 @@
 const jsonwebtoken = require('jsonwebtoken');
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader) {
     return res.status(403).send({ message: "No token provided!" });
   }
-
+  const token = authHeader.split(' ')[1];
   jsonwebtoken.verify(token,
 	  process.env.TOKEN_SECRET,
 	  (err, decoded) => {
@@ -16,7 +16,6 @@ exports.verifyToken = (req, res, next) => {
                 });
               }
 	      console.log("Token still valid");
-	      req.userId = decoded.id;
               next();
             });
 };
