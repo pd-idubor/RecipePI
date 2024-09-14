@@ -68,14 +68,14 @@ exports.loginUser = async (req, res) => {
   }
   if (!password) return res.status(400).send({ msg: "Enter a valid password" });
   try {
-    const user = await Users.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: "No such account exists!" });
     }
 
     const pass = bcrypt.compareSync(password, user.password);
     if (!pass) return res.status(400).send({ msg: "Incorrect details" });
-    const token = jwt.sign({ id: used.id },
+    const token = jwt.sign({ id: user.id },
 	    process.env.TOKEN_SECRET,
 	    {
 		    algorithm: 'HS256',
@@ -84,6 +84,7 @@ exports.loginUser = async (req, res) => {
     return res.status(200).send({ msg: "Login succesaful", token: token });
 
   } catch (err) {
+    console.log(err);
     res.status(500).send({ msg: err.message });
     return;
   }
