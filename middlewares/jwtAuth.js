@@ -17,7 +17,7 @@ exports.verifyToken = (req, res, next) => {
 		message: "Unauthorized!",
                 });
               }
-	      console.log("Token still valid");
+	      req.userId = decoded.id;
               next();
             });
 };

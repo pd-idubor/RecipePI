@@ -16,11 +16,12 @@ const Recipe = mongoose.model(
     required: true
   },
   author: {
-    type: mongoose.ObjectId,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   categories: {
-    type: [String]
+    type: [String],
+    required: true
   }
 
   })

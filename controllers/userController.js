@@ -29,7 +29,7 @@ exports.registerUser = async (req, res) => {
     const exisitingUser = await User.findOne({ email });
 
     if (exisitingUser) {
-      return res.status(400).json({ msg: "A user account with thid email already exists." });
+      return res.status(400).json({ msg: "A user account with this email already exists." });
   }
 
     const hash = bcrypt.hashSync(password, 10);
@@ -81,7 +81,7 @@ exports.loginUser = async (req, res) => {
 		    algorithm: 'HS256',
 		    expiresIn: '1h'
 	    });
-    return res.status(200).send({ msg: "Login succesaful", token: token });
+    return res.status(200).send({ msg: "Login successful", token: token });
 
   } catch (err) {
     console.log(err);

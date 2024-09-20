@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 
 const Rating = mongoose.model(
-  'Rating', new mongoose.Schema ({
+  'Rating', new Schema ({
   author: {
-    type: mongoose.ObjectId,
-    required: 'true'
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
   recipe: {
-    type: mongoose.ObjectId,
-    required: 'true'
+    type: Schema.Types.ObjectId,
+    ref: 'Recipe'
+  },
+  value: {
+    type: number,
+    required: true
   }
 
   })
