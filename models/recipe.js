@@ -12,7 +12,7 @@ const Recipe = mongoose.model(
     required: true
   },
   instructions: {
-    type: [String],
+    type: String,
     required: true
   },
   author: {

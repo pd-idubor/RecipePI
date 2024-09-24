@@ -9,10 +9,10 @@ exports.addRecipe = async (req, res, next) => {
   try {
    const recipe = new Recipe({
 	   title: title,
-	   ingredients: ingredients,
+	   ingredients: ingredients.split(', '),
 	   instructions: instructions,
 	   author: req.userId,
-	   categories: categories
+	   categories: categories.split(', ')
    });
     await recipe.save();
     res.status(200).send({ msg: `New recipe added. Id: ${recipe._id}` });
@@ -80,6 +80,37 @@ exports.deleteRecipe = async (req, res, next) => {
     next();
 	  //return;
   } catch (error) {                                                         return res.status(500).send({ msg: "Error deleting recipe" });
+  }
+}
+
+exports.searchRecipes = async (req, res, next) => {
+  const queryObj = req.query;
+  
+  let sortBy;
+  if (queryObj.sort) {
+    const sort = queryObj.sort;
+    sortBy = sort.split(',').join(' ');
+    } else {
+      sortBy = 'id';
+    }
+
+  const page = queryObj.page * 1 || 1;
+  const limit = queryObj.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+
+  const excludeObj = ['sort', 'page', 'limit'];
+  excludeObj.forEach(obj => delete queryObj[obj]);
+
+  try {
+    const result = await Recipe.find(queryObj)
+	  .sort(sortBy)
+	  .skip(skip)
+	  .limit(limit);
+    return res.status(200).send({ msg: `Success: ${result}` });
+
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ msg: "Error search through recipes" });
   }
 }
 
