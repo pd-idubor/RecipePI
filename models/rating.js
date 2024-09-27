@@ -13,7 +13,7 @@ const Rating = mongoose.model(
     ref: 'Recipe'
   },
   value: {
-    type: number,
+    type: Number,
     required: true
   }
 

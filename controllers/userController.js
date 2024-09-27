@@ -91,9 +91,22 @@ exports.loginUser = async (req, res) => {
 
 }
 
-/*
-exports.deleteUser = () =>{
-
+exports.addFavourite = async (req, res, next) => {                    
+  try {
+    const recipe = req.params.recipe;
+    if (!recipe) return res.status(401).send({ msg: 'No recipe indicated' });
+    const user = await User.findById(req.userId );
+    const favourites = user.favourites;
+    console.log(favourites);
+    if (favourites.includes(recipe)) {
+      return res.status(200).send({ msg: 'Recipe already in favourites' });
+    }
+    user.favourites.push(recipe);
+    await user.save();
+    res.status(200).send({ msg: 'Recipe added to favourites' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: 'Error adding favourite' });
   }
-*/
-//}
+}
+

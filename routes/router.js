@@ -1,6 +1,7 @@
 const express = require('express');
-const { registerUser, loginUser } = require('../controllers/userController');
+const { registerUser, loginUser, addFavourite } = require('../controllers/userController');
 const { addRecipe, updateRecipe, retrieveRecipe, deleteRecipe, allRecipes, searchRecipes } = require('../controllers/recipeController');
+const { rateRecipe, retrieveRating } = require('../controllers/ratingController');
 const { verifyToken } = require('../middlewares/jwtAuth');
 
 
@@ -23,11 +24,25 @@ router.get('/api/verify', [verifyToken], (req, res) => {
   console.log('Verified');
 });
 
-// Endpoints to retrieve recipes
-router.get('/api/search/', [searchRecipes], async (req, res) => {
-    console.log('Searched');
+// Add recipe to favourites
+router.get('/api/addFav/:recipe', [verifyToken, addFavourite], async (req, res) => {
+  console.log("Favourite added");
 });
 
+// Endpoints to search recipe by queries
+router.get('/api/search/', [searchRecipes], async (req, res) => {
+  console.log('Searched');
+});
+
+
+// Rating routes
+router.post('/api/rateRecipe', [verifyToken, rateRecipe], (req, res) => {
+  console.log('Recipe rated');
+});
+
+router.get('/api/getRating/:id', [retrieveRating], (req, res) => {
+  console.log('Rating gotten');
+});
 
 // Recipe routes
 router.post('/api/addRecipe', [verifyToken, addRecipe], (req, res) => {

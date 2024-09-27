@@ -5,7 +5,7 @@ exports.addRecipe = async (req, res, next) => {
   if (!title || !ingredients || !instructions || !categories) {
     return res.status(400).send({ msg: `You need to provide all required information about your recipe!` });
   }
-  console.log(req.userId);
+  //console.log(req.userId);
   try {
    const recipe = new Recipe({
 	   title: title,
@@ -17,7 +17,6 @@ exports.addRecipe = async (req, res, next) => {
     await recipe.save();
     res.status(200).send({ msg: `New recipe added. Id: ${recipe._id}` });
     next();
-	  //return;
   } catch (err) {
     //console.log(err);
     return res.status(500).send({ msg: "Error in adding recipe" });
@@ -45,8 +44,7 @@ exports.updateRecipe = async (req, res, next) => {
     const recipeId = req.params.id;
     const existingRecipe = await Recipe.findById(recipeId);
     if (!existingRecipe) return res.status(400).send({ msg: 'No recipe found' });
-    console.log("bodt: ", req.body);
-    console.log("Req.params: ", recipeId);
+    
     const { title, ingredients, instructions, categories } = req.body;
     if (!title || !ingredients || !instructions || !categories) {
       return res.status(400).send({ msg: "You need to provide all required information about your recipe!" });
