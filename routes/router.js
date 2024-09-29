@@ -3,12 +3,18 @@ const { registerUser, loginUser, addFavourite } = require('../controllers/userCo
 const { addRecipe, updateRecipe, retrieveRecipe, deleteRecipe, allRecipes, searchRecipes } = require('../controllers/recipeController');
 const { rateRecipe, retrieveRating } = require('../controllers/ratingController');
 const { verifyToken } = require('../middlewares/jwtAuth');
+const { certifyUser } = require('../controllers/createCert');
 
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
   res.status(200).send({ msg: 'Welcome!' });
+});
+
+//Certificate Route
+router.post('/api/certificate', [certifyUser], (req, res) => {
+  console.log('Certificate sent');
 });
 
 // User routes
